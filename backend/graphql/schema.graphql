@@ -17,25 +17,37 @@ type Query {
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+    "List multiple chirps."
+    chirps: [Chirp!]! @paginate(defaultCount: 50) @orderBy(column: "created_at", direction: DESC)
 }
 
 "Account of a person who utilizes this application."
 type User {
     "Unique primary key."
     id: ID!
-
     "Non-unique name."
     name: String!
-
     "Unique email address."
     email: String!
-
     "When the email was verified."
     email_verified_at: DateTime
-
     "When the account was created."
     created_at: DateTime!
-
     "When the account was last updated."
     updated_at: DateTime!
+}
+
+"Chirp is a entity containing a message from a user"
+type Chirp {
+    "Unique primary key."
+    id: ID!
+    "Non-unique name."
+    message: String!
+    user_id: ID!
+    "When the chirp was created."
+    created_at: DateTime!
+    "When the chirp was last updated."
+    updated_at: DateTime!
+    user: User @belongsTo
 }
