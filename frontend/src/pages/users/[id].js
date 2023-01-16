@@ -1,9 +1,8 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import Head from 'next/head'
-import { useQuery, gql, useMutation } from '@apollo/client'
+import { useQuery, gql } from '@apollo/client'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Link from 'next/link'
-import ChirpForm from '@/components/Chirp/ChirpForm'
 
 const GET_CHIRPS = gql`
     query {
@@ -13,7 +12,6 @@ const GET_CHIRPS = gql`
                 message
                 created_at
                 user {
-                    id
                     name
                 }
             }
@@ -21,7 +19,7 @@ const GET_CHIRPS = gql`
     }
 `
 
-const Dashboard = () => {
+const User = () => {
     const { loading, error, data } = useQuery(GET_CHIRPS)
 
     if (loading)
@@ -82,10 +80,22 @@ const Dashboard = () => {
             <Head>
                 <title>Laravel + Next</title>
             </Head>
-
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <ChirpForm />
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-2">
+                        <div className="p-6 bg-white border-b border-gray-200">
+                            <textarea
+                                rows="2"
+                                className="block resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+                            <div className="flex mt-2">
+                                <button
+                                    className="w-full py-2 px-4 rounded-md bg-indigo-600 text-white"
+                                    type="button">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
                     {chirps.map(chirp => {
                         return (
@@ -101,7 +111,7 @@ const Dashboard = () => {
                                         )}{' '}
                                         by{' '}
                                         <Link
-                                            href={`/users/${chirp.user.id}`}
+                                            href="/"
                                             className="text-indigo-600">
                                             {chirp.user.name}
                                         </Link>
@@ -116,4 +126,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default User
