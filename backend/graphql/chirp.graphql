@@ -1,0 +1,22 @@
+extend type Query {
+    "List multiple chirps."
+    chirps: [Chirp!]! @paginate(defaultCount: 50) @orderBy(column: "created_at", direction: DESC)
+}
+
+extend type Mutation {
+    createChirp(message: String!, user_id: ID!): Chirp! @create @guard
+}
+
+"Chirp is a entity containing a message from a user"
+type Chirp {
+    "Unique primary key."
+    id: ID!
+    "Non-unique name."
+    message: String!
+    user_id: ID!
+    "When the chirp was created."
+    created_at: DateTime!
+    "When the chirp was last updated."
+    updated_at: DateTime!
+    user: User @belongsTo
+}
